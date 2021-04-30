@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Buscador de alimentos</title>
+	<link rel="stylesheet" type="text/css" href="estilos.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+	<h3>Bem vindo, {{username}}</h3>
+	<form method="post">
+		<button class="btn-logout" type="submit">LOGOUT</button>
+	</form >
+	<img class="img-resize" src="home-food.png">	
+	<h1 class="title">Procure por algum alimento industrializado</h1>
+	<input id="input-busca"  class="input-resize" type="text" size="30" name="">
+	<button id="botao-busca" class="button-resize" type="button">Buscar</button>
+	
+	
+	<h2 id="vazio" class="title hide"><i class="fas fa-times"></i> Erro: o campo não pode ser vazio.</h2>
+	<h2 id="qtdMin" class="title hide"><i class="fas fa-times"></i> Erro: o campo deve possuir pelo menos 3 caracteres.</h2>
+	<h2 id="loading" class="title hide"><i class="fas fa-circle-notch fa-spin"></i> Realizando uma busca ...</h2>
+	<h2 id="nores" class="title hide"><i class="fas fa-exclamation"></i> A busca realizada não retornou resultados.</h2>
+	<h2 id="axioserro" class="title hide"><i class="fas fa-times"></i>  A busca realizada falhou. Por favor, tente novamente.</h2>
+	<div class="card hide">
+		<img class="img-card-resize" id="img-card" src="https://static.openfoodfacts.org/images/products/301/762/042/2003/front_fr.248.400.jpg">
+		<div class=card-nome>
+			<strong class="nome-quantidade">Nome do produto - qtd</strong>
+
+		</div>
+
+		<div id="marca" class="card-marca">
+			Marca(s) do produto
+		</div>
+
+		<div class="card-nutriscore">
+			Nutri-Score: <strong class="score">E</strong>
+			<br>
+			<br>
+			
+			<span id="score-text" class="text-nutri">
+				Info sobre qualidade nutricional		
+			</span>
+
+		</div>
+
+		<div class="info-nutri">
+
+			Em uma porção de 100g existem:	
+			<br>
+			<br>
+			<span class="serving-nutri-facts">
+				<strong id="gordura">30.9</strong> <span> g de gordura - </span> <strong id="gordura-sat">10.6</strong> <span>g de gordura saturada - </span><strong id="carbo">56.3</strong><span> g de açúcares - </span><strong id="sodio">0.107</strong><span> g de sal</span>
+			</span>
+		</div>
+
+
+	</div>
+
+	<div id="container">
+		
+	</div>
+	
+
+	<script type="text/javascript">
+		var container = document.querySelector("#container");
+		document.querySelector("#botao-busca").addEventListener("click",buscar);
+		
+		function buscar(){
+			var flag = 0;
+			container.innerHTML = "";
+			document.querySelector("#nores").classList.add("hide");
+			document.querySelector("#loading").classList.add("hide");
+			document.querySelector("#vazio").classList.add("hide");
+			document.querySelector("#qtdMin").classList.add("hide");
+			document.querySelector("#axioserro").classList.add("hide");
+			var input = document.querySelector("#input-busca").value;
+
+			if (input == ""){
+				document.querySelector("#vazio").classList.remove("hide");
+				return false;
+			}else if (input.length < 3){
+				document.querySelector("#qtdMin").classList.remove("hide");
+				return false;
+			}else{
+				document.querySelector("#loading").classList.remove("hide");
+				var query = document.querySelector("#input-busca").value;
+				axios.get("https://world.openfoodfacts.org/cgi/search.pl?search_terms=" +
+					query + "&search_simple=1&action=process&json=1").then
+				(function(res){	
+					if(res.data.products.length == 0){
+						document.querySelector("#nores").classList.remove("hide");
+					}
+					document.querySelector("#loading").classList.add("hide");
+					let products = res.data.products;
+					var i = 0;
+					
+
+					for (i = 0 ; i <products.length&&i<15; i++){
+
+
+
+						var div = document.createElement("div");
+						var body = document.querySelector("body");	
+
+						
+						var divnome = document.createElement("div");
+						var divmarca = document.createElement("div");
+						var divnutriscore = document.createElement("div");
+						var divinfonutri = document.createElement("div");
+						var img = document.createElement("img");
+						var strong = document.createElement("strong");
+						var strongscore = document.createElement("strong");
+						var strongor = document.createElement("strong");
+						var stronsat = document.createElement("strong");
+						var stronac = document.createElement("strong");
+						var stronsal = document.createElement("strong");
+						var br = document.createElement("br");
+						var br2 = document.createElement("br");
+						var br3 = document.createElement("br");
+						var br4 = document.createElement("br");
+						var spanscore = document.createElement("span");
+						var spanserving = document.createElement("span");
+						var span1 = document.createElement("span");
+						var span2 = document.createElement("span");
+						var span3 = document.createElement("span");
+						var span4 = document.createElement("span");
+
+
+
+						var img_url = products[i].image_url;
+						var prodnome = products[i].product_name;
+						var prodqtd =  products[i].quantity;
+						var marcas  =   products[i].brands;
+						var nota =  products[i].nutriscore_grade;
+						var gordura = products[i].nutriments.fat_100g;
+						var saturada = products[i].nutriments["saturated-fat_100g"];
+						var acucar = products[i].nutriments.sugars_100g;
+						var sal = products[i].nutriments.salt_100g;
+						var qualidadeinfo;
+
+						spanscore.classList.add("text-nutri");
+						divinfonutri.classList.add("info-nutri");
+						div.classList.add("card");
+						divnome.classList.add("card-nome");
+						divmarca.classList.add("card-marca");
+						divnutriscore.classList.add("card-nutriscore");
+						img.classList.add("img-card-resize");
+						strong.classList.add("nome-quantidade");
+						strongscore.classList.add("score");
+						spanserving.classList.add("serving-nutri-facts");
+
+						switch(nota){
+							case "a":
+							qualidadeinfo = "Qualidade nutricional muito boa"
+							break;
+							case "b":
+							qualidadeinfo = "Qualidade nutricional boa"
+							break;
+							case "c":
+							qualidadeinfo = "Qualidade nutricional mediana"
+							break;
+							case "d":
+							qualidadeinfo = "Qualidade nutricional ruim"
+							break;
+							case "e":
+							qualidadeinfo = "Qualidade nutricional muito ruim"
+							break;
+
+						}
+
+						strong.innerHTML = prodnome +" - " + prodqtd ;
+						divmarca.innerHTML = marcas;
+						divnutriscore.innerHTML = "Nutri-Score: ";
+						strongscore.innerHTML = nota;
+						img.src = img_url;
+						spanscore.innerHTML = qualidadeinfo;
+						divinfonutri.innerHTML = "Em uma porção de 100g existem:	";
+						strongor.innerHTML = gordura;
+						span1.innerHTML = " g de gordura - ";
+						stronsat.innerHTML =saturada;
+						span2.innerHTML = " g de gordura saturada - ";
+						stronac.innerHTML = acucar;
+						span3.innerHTML = " g de açúcares - ";
+						stronsal.innerHTML = sal;
+						span4.innerHTML = " g de sal";
+
+						if(img_url != "" && img_url != undefined){
+							if(prodnome != "" && prodnome != undefined){
+
+								if(prodqtd != "" && prodqtd != undefined){
+
+									if(nota != "" && nota != undefined){
+
+										if(prodnome.length + prodqtd.length <= 24){
+
+											if(marcas != "" && marcas != undefined){
+
+												if(marcas.length <= 38){
+
+													if(gordura >= 0 && gordura != undefined){
+
+
+														if(saturada >= 0 && saturada != undefined){
+
+															if(acucar >= 0 && acucar != undefined){
+
+
+
+																if(sal >= 0 && sal != undefined){
+																	flag = 1;
+																	spanserving.appendChild(strongor);
+																	spanserving.appendChild(span1);
+																	spanserving.appendChild(stronsat);
+																	spanserving.appendChild(span2);
+																	spanserving.appendChild(stronac);
+																	spanserving.appendChild(span3);
+																	spanserving.appendChild(stronsal);
+																	spanserving.appendChild(span4);
+																	divinfonutri.appendChild(br3);
+																	divinfonutri.appendChild(br4);
+																	divinfonutri.appendChild(spanserving);
+																	divnutriscore.appendChild(strongscore);
+																	divnutriscore.appendChild(br);
+																	divnutriscore.appendChild(br2);
+																	divnutriscore.appendChild(spanscore);
+																	divnome.appendChild(strong);
+																	div.appendChild(img);
+																	div.appendChild(divnome);
+																	div.appendChild(divmarca);
+																	div.appendChild(divnutriscore);
+																	div.appendChild(divinfonutri);
+																	container.appendChild(div);
+																	body.appendChild(container);
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+
+
+					}
+
+					if(flag == 0){
+						document.querySelector("#nores").classList.remove("hide");
+					}
+
+					
+				}).catch(function (erro) {
+					document.querySelector("#axioserro").classList.remove("hide");
+				});
+			}
+		}
+
+	</script>
+</body>
+</html>

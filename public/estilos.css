@@ -1,0 +1,183 @@
+.title{
+	text-align: center;
+
+}
+
+body{
+	font-family: 'Inter', sans-serif;
+}
+
+
+.img-resize{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 15%;
+	height: auto
+}
+
+.input-resize{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+	height: 50px;
+	font-size: 50px;
+	border:1px black solid;
+}
+
+.button-resize{
+	display: block;
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 15%;
+	height: 50px;
+	font-size: 25px;
+	border-radius: 8px;
+	background-color: #190a63;
+	color:white;
+}
+
+.button-resize:hover{
+	background-color: #8071c7;
+}
+
+.hide{
+	display:none;
+}
+
+.card{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	height: 350px;
+	width: 100%;
+	border: 2px solid black;
+
+}
+
+.img-card-resize{
+	width: 12%;
+	height: 58.5%;
+}
+
+.card-nome{
+
+	height: 100px;
+	width: 70%;
+	margin-left: 12%;
+	margin-top: -210px;
+	font-size: 60px;
+	text-align: center;
+}
+
+.card-marca{
+
+	
+	height: 100px;
+	width: 70%;
+	margin-left: 12%;
+	font-size: 40px;
+	text-align: center;
+	background-color: #e7e6ed;
+
+
+}
+
+.card-nutriscore{
+
+	height: 200px;
+	width: 18%;
+	margin-left: 82%;
+	margin-top: -200px;
+	text-align: center;
+	font-size: 30px;
+	border-left: 1px solid black;
+	border-bottom: 	1px solid black;
+
+
+	
+}
+
+.text-nutri{
+	font-size: 15px;
+}
+
+.info-nutri{
+
+	height: 150px;
+	width: 100%;
+	text-align: center;
+	font-size: 30px;
+
+
+}
+
+.serving-nutri-facts{
+	font-size: 25px;
+}
+
+.score{
+	text-transform: uppercase;
+
+}
+
+.icon-login{
+	display: inline-block;
+    width: 100%;
+    text-align:center;
+
+}
+
+.input-resize-login{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+	width: 50%;
+	height: 35px;
+	font-size: 25px;
+	border:1px black solid;
+	background-color: #e3e3e3;
+}
+
+.title-login{
+	margin-bottom: 50px;
+}
+
+.btn-login{
+	margin-top: 50px;
+}
+
+.button-resize-cadastro{
+	display: block;
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	border-width: 1px;
+	width: 30%;
+	height: 50px;
+	font-size: 25px;
+	border-radius: 8px;
+	color: #190a63;
+	
+}
+
+.button-resize-cadastro:hover{
+	background-color:#beaafa;
+}
+
+.btn-logout{
+
+	width: 10%;
+	height: 30px;
+	font-size: 16px;
+	border-radius: 8px;
+	background-color: #190a63;
+	color:white;
+}
+
+.btn-logout:hover{
+	background-color: #8071c7;
+}
