@@ -26,7 +26,7 @@ app.get('/busca', (req, res) =>{
 	if(req.cookies && req.cookies.login){
 		res.render('busca',{username: req.cookies.login});
 	}else{
-		res.redirect('/')
+		res.redirect('/');
 	}
 })
 
@@ -34,7 +34,7 @@ app.get('/cadastro', (req, res) =>{
 	if(req.cookies && req.cookies.login){
 		res.redirect('/busca');
 	}else{
-		res.end('Cadastro');
+		res.render('cadastro');
 
 	}
 })
@@ -59,5 +59,18 @@ app.post('/', async (req,res) =>{
 
 
 })
+
+app.post('/',(req,res) =>{
+	res.redirect('/cadastro');
+})
+
+app.post('/cadastro', async (req,res) =>{
+	const email = req.body.email,
+	username = req.body.username,
+	password = req.body.password;
+	Users.cadastrar(email,username,password);
+	res.redirect('/');
+})
+
 
 app.listen(3000);

@@ -125,8 +125,8 @@ body{
 
 .icon-login{
 	display: inline-block;
-    width: 100%;
-    text-align:center;
+	width: 100%;
+	text-align:center;
 
 }
 
@@ -180,4 +180,12 @@ body{
 
 .btn-logout:hover{
 	background-color: #8071c7;
+}
+
+.icon-cadastro{
+	display: inline-block;
+	width: 100%;
+	text-align:center;
+	margin-left: 30px;
+	margin-bottom: 50px;
 }
