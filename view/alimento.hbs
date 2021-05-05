@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Alimento</title>
+	<link rel="stylesheet" type="text/css" href="estilos.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+</head>
+<body>
+	<h1 class="title">Cadastro de alimentos industrializados</h1>
+	<form method="post">
+		<input placeholder="Nome do alimento"  class="input-resize-login " type="text" size="30" name="nome">
+		<input placeholder="Quantidade em gramas"  class="input-resize-login " type="number" size="30" name="qtdGramas">
+		<input placeholder="Marca"  class="input-resize-login " type="text" size="30" name="marca">
+		<h4 class="title">Nutriscore</h4>
+		<select class="input-resize-login" name="nutriscore" >
+			<option value="A">A</option>
+			<option value="B">B</option>
+			<option value="C">C</option>
+			<option value="D">D</option>
+			<option value="E">E</option>
+		</select>
+		<h4 class="title">Em uma porção de 100g</h4>
+		<input placeholder="Quantidade em gramas de gordura"  class="input-resize-login " type="number" size="30" name="qtdGordura">
+		<input placeholder="Quantidade em gramas de gordura saturada"  class="input-resize-login " type="number" size="30" name="qtdSaturada">
+		<input placeholder="Quantidade em gramas de açucares"  class="input-resize-login " type="number" size="30" name="qtdAcucar">
+		<input placeholder="Quantidade em gramas de sal"  class="input-resize-login " type="number" size="30" name="qtdSal">
+		<h4 class="title">Imagem do alimento</h4>
+		<input class="input-resize-login " type="file" size="30" name="imagem">
+		<button  class="button-resize btn-login " type="submit">Cadastrar</button>
+	</form>
+</body>
+</html>

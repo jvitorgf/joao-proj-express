@@ -4,6 +4,7 @@ cookieParser = require('cookie-parser'),
 express =require('express'),
 app = express();
 Users = require ('./model/Users')
+Alimentos = require ('./model/Alimentos')
 
 
 
@@ -39,6 +40,14 @@ app.get('/cadastro', (req, res) =>{
 	}
 })
 
+app.get('/alimento', (req, res) =>{
+	if(req.cookies && req.cookies.login==='teste'){
+		res.render('alimento');
+	}else{
+		res.redirect('/');
+	}
+})
+
 app.post('/busca', async (req,res) =>{
 	res.clearCookie('login');
 	res.redirect('/');
@@ -51,7 +60,11 @@ app.post('/', async (req,res) =>{
 
 	if(result>0){
 		res.cookie('login', username);
-		res.redirect('/busca');
+		if (username === 'teste'){
+			res.redirect('/alimento');
+		}else{
+			res.redirect('/busca');
+		}
 		return;
 	}else{
 		res.redirect('/')
@@ -72,5 +85,18 @@ app.post('/cadastro', async (req,res) =>{
 	res.redirect('/');
 })
 
+app.post('/alimento', async (req,res) =>{
+	const nome = req.body.nome,
+	qtdGramas = req.body.qtdGramas,
+	marca = req.body.marca,
+	nutriscore = req.body.nutriscore,
+	qtdGordura = req.body.qtdGordura,
+	qtdSaturada = req.body.qtdSaturada,
+	qtdAcucar = req.body.qtdAcucar,
+	qtdSal = req.body.qtdSal,
+	imagem = req.body.imagem;
+	Alimentos.cadastrar(nome,qtdGramas,marca,nutriscore,qtdGordura,qtdSaturada,qtdAcucar,qtdSal,imagem);
+	res.redirect('/alimento');
+})
 
 app.listen(3000);
