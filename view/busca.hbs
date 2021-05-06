@@ -16,28 +16,30 @@
 	</form >
 	<img class="img-resize" src="home-food.png">	
 	<h1 class="title">Procure por algum alimento industrializado</h1>
-	<input id="input-busca"  class="input-resize" type="text" size="30" name="">
-	<button id="botao-busca" class="button-resize" type="button">Buscar</button>
-	
+	<form method="get">
+		<input id="input-busca"  class="input-resize" type="text" size="30" name="busca">
+		<button id="botao-busca" class="button-resize" type="submit" >Buscar</button>
+	</form>
 	
 	<h2 id="vazio" class="title hide"><i class="fas fa-times"></i> Erro: o campo não pode ser vazio.</h2>
 	<h2 id="qtdMin" class="title hide"><i class="fas fa-times"></i> Erro: o campo deve possuir pelo menos 3 caracteres.</h2>
 	<h2 id="loading" class="title hide"><i class="fas fa-circle-notch fa-spin"></i> Realizando uma busca ...</h2>
 	<h2 id="nores" class="title hide"><i class="fas fa-exclamation"></i> A busca realizada não retornou resultados.</h2>
 	<h2 id="axioserro" class="title hide"><i class="fas fa-times"></i>  A busca realizada falhou. Por favor, tente novamente.</h2>
-	<div class="card hide">
-		<img class="img-card-resize" id="img-card" src="https://static.openfoodfacts.org/images/products/301/762/042/2003/front_fr.248.400.jpg">
-		<div class=card-nome>
-			<strong class="nome-quantidade">Nome do produto - qtd</strong>
+	{{#alimentos}}
+	<div class="card ">
+		<img class="img-card-resize" id="img-card" src="VgAAAAIwAAIAAAB0AAIxAAIAAABlAAIyAAIAAABzAAIzAAIAAAB0AAI0AAIAAABlAAI1AAIAAAAuAAI2AAIAAABwAAI3AAIAAABuAAI4AAIAAABnAAA=">
+		<div class=card-nome>		
+			<strong class="nome-quantidade">{{nome}}- {{qtdGramas}}</strong>
 
 		</div>
 
 		<div id="marca" class="card-marca">
-			Marca(s) do produto
+			{{marca}}
 		</div>
 
 		<div class="card-nutriscore">
-			Nutri-Score: <strong class="score">E</strong>
+			Nutri-Score: <strong class="score">{{nutriscore}}</strong>
 			<br>
 			<br>
 			
@@ -53,9 +55,10 @@
 			<br>
 			<br>
 			<span class="serving-nutri-facts">
-				<strong id="gordura">30.9</strong> <span> g de gordura - </span> <strong id="gordura-sat">10.6</strong> <span>g de gordura saturada - </span><strong id="carbo">56.3</strong><span> g de açúcares - </span><strong id="sodio">0.107</strong><span> g de sal</span>
+				<strong id="gordura">{{qtdGordura}}</strong> <span> g de gordura - </span> <strong id="gordura-sat">{{qtdSaturada}}</strong> <span>g de gordura saturada - </span><strong id="carbo">{{qtdAcucar}}</strong><span> g de açúcares - </span><strong id="sodio">{{qtdSal}}</strong><span> g de sal</span>
 			</span>
 		</div>
+		{{/alimentos}}
 
 
 	</div>

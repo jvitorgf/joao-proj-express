@@ -1,12 +1,29 @@
 let http = require('http'),
 path = require('path'),
 cookieParser = require('cookie-parser'),
+cache = require('express-redis-cache'),
 express =require('express'),
 app = express();
 Users = require ('./model/Users')
 Alimentos = require ('./model/Alimentos')
 
+cache = cache({
+	prefix:'redis-cache',
+	host:'127.0.0.1',
+	port: 6379
+});
 
+cache.invalidate = (name) => {
+  return (req, res, next) => {
+    const route_name = name ? name : req.url;
+    if (!cache.connected) {
+      next();
+      return ;
+    }
+    cache.del(route_name, (err) => console.log(err));
+    next();
+  };
+};
 
 app.set('view engine','hbs');
 app.set('views',path.join(__dirname,'view'));
@@ -15,7 +32,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
 
-app.get('/', (req, res) =>{
+app.get('/',async (req, res) =>{
 	if(req.cookies && req.cookies.login){
 		res.redirect('/busca');
 	}else{
@@ -23,13 +40,16 @@ app.get('/', (req, res) =>{
 	}
 })
 
-app.get('/busca', (req, res) =>{
+app.get('/busca', cache.route(), async (req, res) =>{
 	if(req.cookies && req.cookies.login){
-		res.render('busca',{username: req.cookies.login});
+		const 	busca = req.query.busca,
+		alimentos = await Alimentos.buscar(busca);
+		res.render('busca',{username: req.cookies.login,alimentos:alimentos});
 	}else{
 		res.redirect('/');
 	}
 })
+
 
 app.get('/cadastro', (req, res) =>{
 	if(req.cookies && req.cookies.login){
@@ -48,12 +68,12 @@ app.get('/alimento', (req, res) =>{
 	}
 })
 
-app.post('/busca', async (req,res) =>{
+app.post('/busca',cache.invalidate(), async (req,res) =>{
 	res.clearCookie('login');
 	res.redirect('/');
 })
 
-app.post('/', async (req,res) =>{
+app.post('/',async (req,res) =>{
 	const 	username = req.body.username,
 	password = req.body.password;
 	result = await Users.login(username,password);
@@ -63,6 +83,7 @@ app.post('/', async (req,res) =>{
 		if (username === 'teste'){
 			res.redirect('/alimento');
 		}else{
+
 			res.redirect('/busca');
 		}
 		return;
@@ -77,7 +98,7 @@ app.post('/',(req,res) =>{
 	res.redirect('/cadastro');
 })
 
-app.post('/cadastro', async (req,res) =>{
+app.post('/cadastro', cache.invalidate(), async (req,res) =>{
 	const email = req.body.email,
 	username = req.body.username,
 	password = req.body.password;
@@ -85,7 +106,7 @@ app.post('/cadastro', async (req,res) =>{
 	res.redirect('/');
 })
 
-app.post('/alimento', async (req,res) =>{
+app.post('/alimento',cache.invalidate(), async (req,res) =>{
 	const nome = req.body.nome,
 	qtdGramas = req.body.qtdGramas,
 	marca = req.body.marca,

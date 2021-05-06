@@ -6,7 +6,7 @@ module.exports = class Users{
 		const db = conn.db();
 
 		let result =  await db.collection('users').find({username:username,password:password}).toArray();
-
+		
 		conn.close();
 		return result.length
 	}
