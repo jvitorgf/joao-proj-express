@@ -12,14 +12,28 @@
 	<i class="fas fa-sign-in-alt fa-8x icon-login"></i>
 	<h1 class="icon-login title-login">Login - buscador de alimentos</h1>
 	<form method="post">
-		<input placeholder="Username"  class="input-resize-login input-busca" type="text" size="30" name="username">
-		<input  placeholder="Senha" class="input-resize-login input-busca"  type="password" size="30" name="password">
-		<button  class="button-resize btn-login botao-busca" type="submit">Entrar</button>
+		<input placeholder="Username" id="uname"  class="input-resize-login input-busca" type="text" size="30" name="username">
+		<input  placeholder="Senha" id="pass" class="input-resize-login input-busca"  type="password" size="30" name="password">
+		<button id="botao-login"  class="button-resize btn-login botao-busca" type="submit">Entrar</button>
 	</form>
 
 	<a href="/cadastro"><button href="/cadastro"  class="button-resize-cadastro botao-busca " name="cadastro" type="button">Cadastrar uma nova conta</button></a>
 	
+	<script type="text/javascript">
+		document.querySelector("#botao-login").addEventListener("click",validarLogin);
+		
+		
+		function validarLogin(){
+			let username =  document.querySelector("#uname").value
+			let password = document.querySelector("#pass").value
 
+			if (username == "" || password == ""){
+				alert('Por favor, preencha os dois campos');
+				return false;
+			}
+		}
+
+	</script>
 
 </body>
 </html>

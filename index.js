@@ -3,9 +3,12 @@ path = require('path'),
 cookieParser = require('cookie-parser'),
 cache = require('express-redis-cache'),
 express =require('express'),
+multer = require('multer'),
+upload = multer({ dest: 'public/uploads' }),
 app = express();
 Users = require ('./model/Users')
 Alimentos = require ('./model/Alimentos')
+
 
 cache = cache({
 	prefix:'redis-cache',
@@ -14,15 +17,15 @@ cache = cache({
 });
 
 cache.invalidate = (name) => {
-  return (req, res, next) => {
-    const route_name = name ? name : req.url;
-    if (!cache.connected) {
-      next();
-      return ;
-    }
-    cache.del(route_name, (err) => console.log(err));
-    next();
-  };
+	return (req, res, next) => {
+		const route_name = name ? name : req.url;
+		if (!cache.connected) {
+			next();
+			return ;
+		}
+		cache.del(route_name, (err) => console.log(err));
+		next();
+	};
 };
 
 app.set('view engine','hbs');
@@ -40,7 +43,7 @@ app.get('/',async (req, res) =>{
 	}
 })
 
-app.get('/busca', cache.route(), async (req, res) =>{
+app.get('/busca',  async (req, res) =>{
 	if(req.cookies && req.cookies.login){
 		const 	busca = req.query.busca,
 		alimentos = await Alimentos.buscar(busca);
@@ -68,7 +71,7 @@ app.get('/alimento', (req, res) =>{
 	}
 })
 
-app.post('/busca',cache.invalidate(), async (req,res) =>{
+app.post('/busca', async (req,res) =>{
 	res.clearCookie('login');
 	res.redirect('/');
 })
@@ -98,7 +101,7 @@ app.post('/',(req,res) =>{
 	res.redirect('/cadastro');
 })
 
-app.post('/cadastro', cache.invalidate(), async (req,res) =>{
+app.post('/cadastro',  async (req,res) =>{
 	const email = req.body.email,
 	username = req.body.username,
 	password = req.body.password;
@@ -106,7 +109,7 @@ app.post('/cadastro', cache.invalidate(), async (req,res) =>{
 	res.redirect('/');
 })
 
-app.post('/alimento',cache.invalidate(), async (req,res) =>{
+app.post('/alimento', upload.single('file'), async (req,res) =>{
 	const nome = req.body.nome,
 	qtdGramas = req.body.qtdGramas,
 	marca = req.body.marca,
@@ -115,9 +118,10 @@ app.post('/alimento',cache.invalidate(), async (req,res) =>{
 	qtdSaturada = req.body.qtdSaturada,
 	qtdAcucar = req.body.qtdAcucar,
 	qtdSal = req.body.qtdSal,
-	imagem = req.body.imagem;
+	imagem = req.file.path;
 	Alimentos.cadastrar(nome,qtdGramas,marca,nutriscore,qtdGordura,qtdSaturada,qtdAcucar,qtdSal,imagem);
 	res.redirect('/alimento');
 })
+
 
 app.listen(3000);

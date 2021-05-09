@@ -11,11 +11,27 @@
 	<i class="fas fa-user-plus fa-8x icon-cadastro"></i>
 	<h1 class="title">Cadastro</h1>
 	<form method="post">
-		<input placeholder="E-mail"  class="input-resize-login " type="text" size="30" name="email">
-		<input placeholder="Username"  class="input-resize-login " type="text" size="30" name="username">
-		<input  placeholder="Senha" class="input-resize-login "  type="password" size="30" name="password">
-		<button  class="button-resize btn-login " type="submit">Cadastrar</button>
+		<input placeholder="E-mail"  id="email" class="input-resize-login " type="text" size="30" name="email">
+		<input placeholder="Username" id="uname" class="input-resize-login " type="text" size="30" name="username">
+		<input  placeholder="Senha" id="pass" class="input-resize-login "  type="password" size="30" name="password">
+		<button id="btn-cadastrar"  class="button-resize btn-login " type="submit">Cadastrar</button>
 	</form>
 
+	<script type="text/javascript">
+		document.querySelector("#btn-cadastrar").addEventListener("click",validarCadastro);
+		
+		
+		function validarCadastro(){
+			let email =  document.querySelector("#email").value
+			let username =  document.querySelector("#uname").value
+			let password = document.querySelector("#pass").value
+
+			if (username == "" || password == ""|| email == ""){
+				alert('Por favor, preencha todos os campos');
+				return false;
+			}
+		}
+
+	</script>
 </body>
 </html>

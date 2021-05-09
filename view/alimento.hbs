@@ -9,10 +9,10 @@
 </head>
 <body>
 	<h1 class="title">Cadastro de alimentos industrializados</h1>
-	<form method="post">
-		<input placeholder="Nome do alimento"  class="input-resize-login " type="text" size="30" name="nome">
-		<input placeholder="Quantidade em gramas"  class="input-resize-login " type="number" size="30" name="qtdGramas">
-		<input placeholder="Marca"  class="input-resize-login " type="text" size="30" name="marca">
+	<form method="post"  enctype="multipart/form-data" >
+		<input placeholder="Nome do alimento" id="nome"  class="input-resize-login " type="text" size="30" name="nome">
+		<input placeholder="Quantidade em gramas" id="qtdGramas"  class="input-resize-login " type="number" size="30" name="qtdGramas">
+		<input placeholder="Marca"  class="input-resize-login " id="marca" type="text" size="30" name="marca">
 		<h4 class="title">Nutriscore</h4>
 		<select class="input-resize-login" name="nutriscore" >
 			<option value="A">A</option>
@@ -22,13 +22,34 @@
 			<option value="E">E</option>
 		</select>
 		<h4 class="title">Em uma porção de 100g</h4>
-		<input placeholder="Quantidade em gramas de gordura"  class="input-resize-login " type="number" size="30" name="qtdGordura">
-		<input placeholder="Quantidade em gramas de gordura saturada"  class="input-resize-login " type="number" size="30" name="qtdSaturada">
-		<input placeholder="Quantidade em gramas de açucares"  class="input-resize-login " type="number" size="30" name="qtdAcucar">
-		<input placeholder="Quantidade em gramas de sal"  class="input-resize-login " type="number" size="30" name="qtdSal">
+		<input placeholder="Quantidade em gramas de gordura" id="gordura"  class="input-resize-login " type="number" size="30" name="qtdGordura">
+		<input placeholder="Quantidade em gramas de gordura saturada" id="saturada"  class="input-resize-login " type="number" size="30" name="qtdSaturada">
+		<input placeholder="Quantidade em gramas de açucares" id="acucar"  class="input-resize-login " type="number" size="30" name="qtdAcucar">
+		<input placeholder="Quantidade em gramas de sal" id="sal" class="input-resize-login " type="number" size="30" name="qtdSal">
 		<h4 class="title">Imagem do alimento</h4>
-		<input class="input-resize-login " type="file" size="30" name="imagem">
-		<button  class="button-resize btn-login " type="submit">Cadastrar</button>
+		<input class="input-resize-login " id="imagem" type="file" size="30" name="file" >
+		<button id="btn-cadastrar"  class="button-resize btn-login " type="submit">Cadastrar</button>
 	</form>
+	<script type="text/javascript">
+		document.querySelector("#btn-cadastrar").addEventListener("click",validarCadastro);
+		
+		
+		function validarCadastro(){
+			let nome =  document.querySelector("#nome").value
+			let qtdGramas =  document.querySelector("#qtdGramas").value
+			let marca = document.querySelector("#marca").value
+			let gordura =  document.querySelector("#gordura").value
+			let saturada =  document.querySelector("#saturada").value
+			let acucar = document.querySelector("#acucar").value
+			let sal =  document.querySelector("#sal").value
+			let imagem =  document.querySelector("#imagem").value
+
+			if (nome == "" || qtdGramas == ""|| marca == ""|| gordura == ""|| saturada == ""|| acucar == ""|| sal == ""|| imagem == ""){
+				alert('Por favor, preencha todos os campos');
+				return false;
+			}
+		}
+
+	</script>
 </body>
 </html>
