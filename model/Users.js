@@ -16,11 +16,22 @@ module.exports = class Users{
 		const db = conn.db();
 		let usernameArray =  await db.collection('users').find({username:username}).toArray();
 		let emailArray =  await db.collection('users').find({email:email}).toArray();
-
-		if (usernameArray.length===0&&emailArray.length===0){
+		let result = usernameArray.length + emailArray.length
+		if (usernameArray.length===0&&emailArray.length===0&&email!==""&&username!==""&&password!==""){
 			db.collection('users').insertOne({email: email,username:username,password:password,admin:0});
 		}
 		conn.close();
+		return result;
+	}
+
+	static async adminCheck(username,password){
+		const conn = await MongoClient.connect('mongodb://127.0.0.1:27017/projweb2');
+		const db = conn.db();
+
+		let result =  await db.collection('users').find({username:username,password:password,admin:1}).toArray();
+		
+		conn.close();
+		return result.length
 	}
 
 

@@ -17,7 +17,7 @@
 		<button id="botao-login"  class="button-resize btn-login botao-busca" type="submit">Entrar</button>
 	</form>
 
-	<a href="/cadastro"><button href="/cadastro"  class="button-resize-cadastro botao-busca " name="cadastro" type="button">Cadastrar uma nova conta</button></a>
+	<a href="/cadastro" class="link-cadastro"><button href="/cadastro"  class="button-resize-cadastro botao-busca " name="cadastro" type="button">Cadastrar uma nova conta</button></a>
 	
 	<script type="text/javascript">
 		document.querySelector("#botao-login").addEventListener("click",validarLogin);
@@ -31,6 +31,17 @@
 				alert('Por favor, preencha os dois campos');
 				return false;
 			}
+		}
+		
+
+		if({{login}} === 1){
+			alert('Usuário e/ou senha incorretos.')
+		}
+
+		if({{cadastro}}===1 || {{cadastro}}===2){
+			alert('Username ou email já estão cadastrados. Por favor, digite outros dados');	
+		} else if({{cadastro}}===3){
+			alert('Usuário cadastrado com sucesso');
 		}
 
 	</script>

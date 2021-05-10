@@ -1,5 +1,4 @@
 const MongoClient = require('mongodb').MongoClient;
-const BSON = require('bson');
 
 
 module.exports = class Alimentos{
@@ -30,7 +29,7 @@ module.exports = class Alimentos{
 		}
 		let alimentosArray =  await db.collection('alimentos').find({ nome: nome,qtdGramas:qtdGramas,marca:marca,nutriscore:nutriscore,qtdGordura:qtdGordura,qtdSaturada:qtdSaturada,qtdAcucar:qtdAcucar,qtdSal:qtdSal,imagem:imagem}).toArray();
 
-		if (alimentosArray.length===0){
+		if (alimentosArray.length===0&&nome!==""&&qtdGramas!==""&&marca!==""&&qtdGordura!==""&&qtdSaturada!==""&&qtdAcucar!==""&&qtdSal!==""&&imagem!==""){
 			db.collection('alimentos').insertOne({nome: nome,qtdGramas:qtdGramas,marca:marca,nutriscore:nutriscore,qtdGordura:qtdGordura,qtdSaturada:qtdSaturada,qtdAcucar:qtdAcucar,qtdSal:qtdSal,imagem:imagem,qualidadeinfo:qualidadeinfo});
 		}
 

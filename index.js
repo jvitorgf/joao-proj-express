@@ -9,6 +9,10 @@ app = express();
 Users = require ('./model/Users')
 Alimentos = require ('./model/Alimentos')
 
+login = 0;
+cadastro = 0;
+getAdmin = 0;
+
 
 cache = cache({
 	prefix:'redis-cache',
@@ -36,10 +40,14 @@ app.use(cookieParser());
 
 
 app.get('/',async (req, res) =>{
+	getAdmin = 0;
 	if(req.cookies && req.cookies.login){
 		res.redirect('/busca');
 	}else{
-		res.render('login');
+
+		res.render('login',{login:login,cadastro:cadastro});
+		cadastro = 0;
+		login = 0;
 	}
 })
 
@@ -64,7 +72,7 @@ app.get('/cadastro', (req, res) =>{
 })
 
 app.get('/alimento', (req, res) =>{
-	if(req.cookies && req.cookies.login==='teste'){
+	if(req.cookies && getAdmin===1){
 		res.render('alimento');
 	}else{
 		res.redirect('/');
@@ -76,21 +84,29 @@ app.post('/busca', async (req,res) =>{
 	res.redirect('/');
 })
 
+
 app.post('/',async (req,res) =>{
 	const 	username = req.body.username,
 	password = req.body.password;
-	result = await Users.login(username,password);
+	if(username!==""&&password!==""){
+		result = await Users.login(username,password);
+		admin = await Users.adminCheck(username,password);
+		getAdmin = admin;
+		if(result>0){
+			res.cookie('login', username);
+			if (admin === 1){
+				res.redirect('/alimento');
+			}else{
 
-	if(result>0){
-		res.cookie('login', username);
-		if (username === 'teste'){
-			res.redirect('/alimento');
+				res.redirect('/busca');
+			}
+			return;
 		}else{
-
-			res.redirect('/busca');
+			login = 1;
+			res.redirect('/')
 		}
-		return;
-	}else{
+	} else{
+		login = 0;
 		res.redirect('/')
 	}
 
@@ -105,7 +121,12 @@ app.post('/cadastro',  async (req,res) =>{
 	const email = req.body.email,
 	username = req.body.username,
 	password = req.body.password;
-	Users.cadastrar(email,username,password);
+	if(email!==""&&username!==""&&password!==""){
+		cadastro =  await Users.cadastrar(email,username,password);
+		if(cadastro === 0){
+			cadastro = 3;
+		}
+	}
 	res.redirect('/');
 })
 
@@ -117,8 +138,12 @@ app.post('/alimento', upload.single('file'), async (req,res) =>{
 	qtdGordura = req.body.qtdGordura,
 	qtdSaturada = req.body.qtdSaturada,
 	qtdAcucar = req.body.qtdAcucar,
-	qtdSal = req.body.qtdSal,
-	imagem = req.file.path;
+	qtdSal = req.body.qtdSal;
+	if(req.file !== undefined){
+		imagem = req.file.path;
+	}else{
+		imagem = "";
+	}
 	Alimentos.cadastrar(nome,qtdGramas,marca,nutriscore,qtdGordura,qtdSaturada,qtdAcucar,qtdSal,imagem);
 	res.redirect('/alimento');
 })
