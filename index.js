@@ -19,7 +19,7 @@ cache = cache({
 	host:'127.0.0.1',
 	port: 6379
 });
-
+	
 cache.invalidate = (name) => {
 	return (req, res, next) => {
 		const route_name = name ? name : req.url;
@@ -39,7 +39,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
 
-app.get('/',async (req, res) =>{
+app.get('/', cache.invalidate(),async (req, res) =>{
 	getAdmin = 0;
 	if(req.cookies && req.cookies.login){
 		res.redirect('/busca');
@@ -51,7 +51,7 @@ app.get('/',async (req, res) =>{
 	}
 })
 
-app.get('/busca',  async (req, res) =>{
+app.get('/busca', cache.route(),  async (req, res) =>{
 	if(req.cookies && req.cookies.login){
 		const 	busca = req.query.busca,
 		alimentos = await Alimentos.buscar(busca);
@@ -79,7 +79,7 @@ app.get('/alimento', (req, res) =>{
 	}
 })
 
-app.post('/busca', async (req,res) =>{
+app.post('/busca', cache.invalidate(), async (req,res) =>{
 	res.clearCookie('login');
 	res.redirect('/');
 })
