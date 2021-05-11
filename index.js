@@ -8,6 +8,7 @@ upload = multer({ dest: 'public/uploads' }),
 app = express();
 Users = require ('./model/Users')
 Alimentos = require ('./model/Alimentos')
+port = process.env.PORT || 3000;
 
 login = 0;
 cadastro = 0;
@@ -154,4 +155,4 @@ app.post('/alimento', upload.single('file'), async (req,res) =>{
 })
 
 
-app.listen(3000);
+app.listen(port);
