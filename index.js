@@ -16,11 +16,6 @@ getAdmin = 0;
 item = 0;
 
 
-cache = cache({
-	prefix:'redis-cache',
-	host:'127.0.0.1',
-	port: 6379
-});
 
 cache.invalidate = (name) => {
 	return (req, res, next) => {
