@@ -12,6 +12,7 @@ Alimentos = require ('./model/Alimentos')
 login = 0;
 cadastro = 0;
 getAdmin = 0;
+item = 0;
 
 
 cache = cache({
@@ -19,7 +20,7 @@ cache = cache({
 	host:'127.0.0.1',
 	port: 6379
 });
-	
+
 cache.invalidate = (name) => {
 	return (req, res, next) => {
 		const route_name = name ? name : req.url;
@@ -73,7 +74,8 @@ app.get('/cadastro', (req, res) =>{
 
 app.get('/alimento', (req, res) =>{
 	if(req.cookies && getAdmin===1){
-		res.render('alimento');
+		res.render('alimento',{item:item});
+		item = 0;
 	}else{
 		res.redirect('/');
 	}
@@ -144,8 +146,11 @@ app.post('/alimento', upload.single('file'), async (req,res) =>{
 	}else{
 		imagem = "";
 	}
-	Alimentos.cadastrar(nome,qtdGramas,marca,nutriscore,qtdGordura,qtdSaturada,qtdAcucar,qtdSal,imagem);
+	if(nome!==""&&qtdGramas!==""&&marca!==""&&qtdGordura!==""&&qtdSaturada!==""&&qtdAcucar!==""&&qtdSal!==""&&imagem!==""){
+		item = await Alimentos.cadastrar(nome,qtdGramas,marca,nutriscore,qtdGordura,qtdSaturada,qtdAcucar,qtdSal,imagem);
+	}
 	res.redirect('/alimento');
+
 })
 
 

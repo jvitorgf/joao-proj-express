@@ -23,10 +23,10 @@
 			<option value="E">E</option>
 		</select>
 		<h4 class="title">Em uma porção de 100g</h4>
-		<input placeholder="Quantidade em gramas de gordura" id="gordura"  class="input-resize-login " type="number" size="30" name="qtdGordura">
-		<input placeholder="Quantidade em gramas de gordura saturada" id="saturada"  class="input-resize-login " type="number" size="30" name="qtdSaturada">
-		<input placeholder="Quantidade em gramas de açucares" id="acucar"  class="input-resize-login " type="number" size="30" name="qtdAcucar">
-		<input placeholder="Quantidade em gramas de sal" id="sal" class="input-resize-login " type="number" size="30" name="qtdSal">
+		<input placeholder="Quantidade em gramas de gordura" id="gordura"  class="input-resize-login " type="number" size="30" step="0.001" name="qtdGordura">
+		<input placeholder="Quantidade em gramas de gordura saturada" id="saturada"  class="input-resize-login " step="0.001" type="number" size="30" name="qtdSaturada">
+		<input placeholder="Quantidade em gramas de açucares" id="acucar"  class="input-resize-login " type="number" size="30" step="0.001" name="qtdAcucar">
+		<input placeholder="Quantidade em gramas de sal" id="sal" class="input-resize-login " type="number" size="30" step="0.001" name="qtdSal">
 		<h4 class="title">Imagem do alimento</h4>
 		<input class="input-resize-login " id="imagem" type="file" size="30" name="file" >
 		<button id="btn-cadastrar"  class="button-resize btn-login " type="submit">Cadastrar</button>
@@ -49,7 +49,13 @@
 				alert('Por favor, preencha todos os campos');
 				return false;
 			}
+
+			
 		}
+
+		if({{item}} === 1){
+				alert('Alimento cadastrado com sucesso');
+			}
 
 	</script>
 </body>
