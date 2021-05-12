@@ -1,6 +1,7 @@
 let http = require('http'),
 path = require('path'),
 cookieParser = require('cookie-parser'),
+cache = require('express-redis-cache'),
 express =require('express'),
 multer = require('multer'),
 upload = multer({ dest: 'public/uploads' }),
@@ -16,6 +17,24 @@ getAdmin = 0;
 item = 0;
 
 
+cache = cache({
+	prefix:'redis-cache',
+	host:'redis-18868.c114.us-east-1-4.ec2.cloud.redislabs.com',
+	port: 18868,
+	auth_pass:'mfrt9yTmBrn8wGnhH0TgcRsZBXqUSOAf'
+});
+
+cache.invalidate = (name) => {
+	return (req, res, next) => {
+		const route_name = name ? name : req.url;
+		if (!cache.connected) {
+			next();
+			return ;
+		}
+		cache.del(route_name, (err) => console.log(err));
+		next();
+	};
+};
 
 app.set('view engine','hbs');
 app.set('views',path.join(__dirname,'view'));
@@ -24,7 +43,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
 
-app.get('/',async (req, res) =>{
+app.get('/', cache.invalidate(),async (req, res) =>{
 	getAdmin = 0;
 	if(req.cookies && req.cookies.login){
 		res.redirect('/busca');
@@ -36,7 +55,7 @@ app.get('/',async (req, res) =>{
 	}
 })
 
-app.get('/busca',  async (req, res) =>{
+app.get('/busca', cache.route(),  async (req, res) =>{
 	if(req.cookies && req.cookies.login){
 		const 	busca = req.query.busca,
 		alimentos = await Alimentos.buscar(busca);
@@ -56,7 +75,7 @@ app.get('/cadastro', (req, res) =>{
 	}
 })
 
-app.get('/alimento', (req, res) =>{
+app.get('/alimento',  (req, res) =>{
 	if(req.cookies && getAdmin===1){
 		res.render('alimento',{item:item});
 		item = 0;
@@ -65,7 +84,7 @@ app.get('/alimento', (req, res) =>{
 	}
 })
 
-app.post('/busca', async (req,res) =>{
+app.post('/busca', cache.invalidate(), async (req,res) =>{
 	res.clearCookie('login');
 	res.redirect('/');
 })
