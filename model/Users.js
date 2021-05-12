@@ -1,8 +1,9 @@
 const MongoClient = require('mongodb').MongoClient;
+var mongoURL = 'mongodb+srv://UserDBProj:Iu5HJHNYWVuZxcup@projweb2.sdmpj.mongodb.net/projweb2?retryWrites=true&w=majority' || 'mongodb://127.0.0.1:27017/projweb2'
 
 module.exports = class Users{
 	static async login(username,password){
-		const conn = await MongoClient.connect('mongodb://127.0.0.1:27017/projweb2');
+		const conn = await MongoClient.connect(mongoURL);
 		const db = conn.db();
 
 		let result =  await db.collection('users').find({username:username,password:password}).toArray();
@@ -12,7 +13,7 @@ module.exports = class Users{
 	}
 
 	static async cadastrar(email,username,password){
-		const conn = await MongoClient.connect('mongodb://127.0.0.1:27017/projweb2');
+		const conn = await MongoClient.connect(mongoURL);
 		const db = conn.db();
 		let usernameArray =  await db.collection('users').find({username:username}).toArray();
 		let emailArray =  await db.collection('users').find({email:email}).toArray();
@@ -25,7 +26,7 @@ module.exports = class Users{
 	}
 
 	static async adminCheck(username,password){
-		const conn = await MongoClient.connect('mongodb://127.0.0.1:27017/projweb2');
+		const conn = await MongoClient.connect(mongoURL);
 		const db = conn.db();
 
 		let result =  await db.collection('users').find({username:username,password:password,admin:1}).toArray();
