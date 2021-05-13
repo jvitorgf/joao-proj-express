@@ -1,6 +1,7 @@
 let http = require('http'),
 path = require('path'),
 cookieParser = require('cookie-parser'),
+session = require('express-session'),
 cache = require('express-redis-cache'),
 express =require('express'),
 multer = require('multer'),
@@ -41,11 +42,17 @@ app.set('views',path.join(__dirname,'view'));
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
+app.use(session({
+	secret: 'cDJASdj9S0AFAd656',
+	resave: false,
+	saveUninitialized: true,
+	cookie: { secure: false }
+}))
 
 
 app.get('/', cache.invalidate(),async (req, res) =>{
 	getAdmin = 0;
-	if(req.cookies && req.cookies.login){
+	if(req.cookies && req.cookies.login && req.session && req.session.login){
 		res.redirect('/busca');
 	}else{
 
@@ -56,7 +63,7 @@ app.get('/', cache.invalidate(),async (req, res) =>{
 })
 
 app.get('/busca', cache.route(),  async (req, res) =>{
-	if(req.cookies && req.cookies.login){
+	if(req.cookies && req.cookies.login && req.session && req.session.login){
 		const 	busca = req.query.busca,
 		alimentos = await Alimentos.buscar(busca);
 		res.render('busca',{username: req.cookies.login,alimentos:alimentos});
@@ -67,7 +74,7 @@ app.get('/busca', cache.route(),  async (req, res) =>{
 
 
 app.get('/cadastro', (req, res) =>{
-	if(req.cookies && req.cookies.login){
+	if(req.cookies && req.cookies.login && req.session && req.session.login){
 		res.redirect('/busca');
 	}else{
 		res.render('cadastro');
@@ -76,7 +83,7 @@ app.get('/cadastro', (req, res) =>{
 })
 
 app.get('/alimento',  (req, res) =>{
-	if(req.cookies && getAdmin===1){
+	if(req.cookies && getAdmin===1 && req.session && req.session.login){
 		res.render('alimento',{item:item});
 		item = 0;
 	}else{
@@ -85,7 +92,9 @@ app.get('/alimento',  (req, res) =>{
 })
 
 app.post('/busca', cache.invalidate(), async (req,res) =>{
+	req.session.destroy();
 	res.clearCookie('login');
+	res.clearCookie('connect.sid');
 	res.redirect('/');
 })
 
@@ -99,6 +108,7 @@ app.post('/',async (req,res) =>{
 		getAdmin = admin;
 		if(result>0){
 			res.cookie('login', username);
+			req.session.login = username;
 			if (admin === 1){
 				res.redirect('/alimento');
 			}else{
@@ -116,10 +126,6 @@ app.post('/',async (req,res) =>{
 	}
 
 
-})
-
-app.post('/',(req,res) =>{
-	res.redirect('/cadastro');
 })
 
 app.post('/cadastro',  async (req,res) =>{
