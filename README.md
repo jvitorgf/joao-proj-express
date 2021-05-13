@@ -15,6 +15,5 @@ username: user
 
 senha: user123
 
-## Alimento já cadastrado
-Buscar por: "Nutella"
+
 
