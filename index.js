@@ -62,11 +62,16 @@ app.get('/', cache.invalidate(),async (req, res) =>{
 	}
 })
 
-app.get('/busca', cache.route(),  async (req, res) =>{
+app.get('/busca',   async (req, res) =>{
+	var alimentos = null;
 	if(req.cookies && req.cookies.login && req.session && req.session.login){
-		const 	busca = req.query.busca,
-		alimentos = await Alimentos.buscar(busca);
-		res.render('busca',{username: req.cookies.login,alimentos:alimentos});
+		cache.route()
+		if(req.query.busca !== "" &&req.query.busca !== null){
+			const 	busca = req.query.busca;
+			alimentos = await Alimentos.buscar(busca);
+
+		}
+		res.render('busca',{username: req.session.login,alimentos:alimentos});
 	}else{
 		res.redirect('/');
 	}
