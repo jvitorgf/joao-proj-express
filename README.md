@@ -15,5 +15,5 @@ username: user
 
 senha: user123
 
-
-
+## Alimentos já cadastrados
+Buscar por: "Nutella", "Oreo" ou "Corn"
