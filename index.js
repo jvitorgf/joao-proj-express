@@ -5,7 +5,8 @@ session = require('express-session'),
 cache = require('express-redis-cache'),
 express =require('express'),
 multer = require('multer'),
-upload = multer({ dest: 'public/uploads' }),
+storage = multer.memoryStorage();
+upload = multer({ storage: storage }),
 port = process.env.PORT || 3000,
 app = express();
 
@@ -156,7 +157,7 @@ app.post('/alimento', upload.single('file'), async (req,res) =>{
 	qtdAcucar = req.body.qtdAcucar,
 	qtdSal = req.body.qtdSal;
 	if(req.file !== undefined){
-		imagem = req.file.path;
+		imagem = req.file.buffer.toString("base64");
 	}else{
 		imagem = "";
 	}

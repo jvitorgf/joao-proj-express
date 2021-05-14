@@ -8,7 +8,7 @@ module.exports = class Alimentos{
 		const db = conn.db();
 		let qualidadeinfo;
 		let flag = 0;
-		imagem = imagem.substr(7)
+	
 
 		switch(nutriscore){
 			case "A":
