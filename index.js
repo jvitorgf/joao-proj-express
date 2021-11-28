@@ -21,9 +21,9 @@ item = 0;
 
 cache = cache({
 	prefix:'redis-cache',
-	host:'redis-18868.c114.us-east-1-4.ec2.cloud.redislabs.com',
-	port: 18868,
-	auth_pass:'mfrt9yTmBrn8wGnhH0TgcRsZBXqUSOAf'
+	host:'redis-19249.c267.us-east-1-4.ec2.cloud.redislabs.com',
+	port: 19249,
+	auth_pass: process.env.REDISKEY
 });
 
 cache.invalidate = (name) => {
