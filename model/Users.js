@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-var mongoURL = 'mongodb+srv://UserDBProj:Iu5HJHNYWVuZxcup@projweb2.sdmpj.mongodb.net/projweb2?retryWrites=true&w=majority' || 'mongodb://127.0.0.1:27017/projweb2'
+var mongoURL = process.env.MONGODBKEY || 'mongodb://127.0.0.1:27017/projweb2'
 
 module.exports = class Users{
 	static async login(username,password){

@@ -193,3 +193,30 @@ body{
 .link-cadastro{
 	text-decoration: none;
 }
+
+.new-alert{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 30px;
+	font-size: 20px;
+}
+
+.spinner-div{
+	margin-left: 49%;
+	margin-right: 49%;
+	font-size: 50px;
+	margin-top: 20px;
+}
+
+#botao-login{
+	margin-top: 150px;
+}
+
+
+@media(max-width:1046px	){
+	.botao-cadastro{
+		font-size: 20px;
+	}
+
+}

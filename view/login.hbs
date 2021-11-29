@@ -1,50 +1,89 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Login</title>
 	<link rel="stylesheet" type="text/css" href="estilos.css">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 </head>
 
 <body>
 	<i class="fas fa-sign-in-alt fa-8x icon-login"></i>
 	<h1 class="icon-login title-login">Login - buscador de alimentos</h1>
-	<form method="post">
-		<input placeholder="Username" id="uname"  class="input-resize-login input-busca" type="text" size="30" name="username">
-		<input  placeholder="Senha" id="pass" class="input-resize-login input-busca"  type="password" size="30" name="password">
-		<button id="botao-login"  class="button-resize btn-login botao-busca" type="submit">Entrar</button>
+	<form id="myForm" method="post">
+		<input placeholder="Username" id="uname" class="input-resize-login input-busca" type="text" size="30"
+			name="username">
+		<input placeholder="Senha" id="pass" class="input-resize-login input-busca" type="password" size="30"
+			name="password">
+		<div id="div-spin" class="hide"><i class="fas fa-circle-notch fa-spin spinner-div"></i></div>
+		<div id="alert-msg-1" class="new-alert hide">Por favor, preencha os dois campos</div>
+		<div id="alert-msg-2" class="new-alert hide">Usuário e/ou senha incorretos</div>
+		<button id="botao-login" class="button-resize btn-login botao-busca" type="submit">Entrar</button>
+		{{!-- <div id="alert-msg-3" class="new-alert hide">Username ou email já estão cadastrados. Por favor, digite
+			outros
+			dados</div>
+		<div id="alert-msg-4" class="new-alert hide">Usuário cadastrado com sucesso</div> --}}
 	</form>
 
-	<a href="/cadastro" class="link-cadastro"><button href="/cadastro"  class="button-resize-cadastro botao-busca " name="cadastro" type="button">Cadastrar uma nova conta</button></a>
-	
+	<a href="/cadastro" class="link-cadastro"><button href="/cadastro" class="button-resize-cadastro botao-cadastro "
+			name="cadastro" type="button">Cadastrar uma nova conta</button></a>
+
 	<script type="text/javascript">
-		document.querySelector("#botao-login").addEventListener("click",validarLogin);
-		
-		
-		function validarLogin(){
-			let username =  document.querySelector("#uname").value
+		document.querySelector("#botao-login").addEventListener("click", validarLogin);
+
+
+		function validarLogin() {
+			let username = document.querySelector("#uname").value
 			let password = document.querySelector("#pass").value
 
-			if (username == "" || password == ""){
-				alert('Por favor, preencha os dois campos');
-				return false;
+			if (username == "" || password == "") {
+				preventSubmitDefault();
+				document.querySelector("#alert-msg-1").classList.remove("hide");
+				setTimeout(function () {
+					document.querySelector("#alert-msg-1").classList.add("hide");
+					document.location.reload(true);
+					return false;
+				}, 2000)
+
+			} else {
+				document.querySelector("#div-spin").classList.remove("hide");
 			}
 		}
-		
 
-		if({{login}} === 1){
-			alert('Usuário e/ou senha incorretos.')
+
+
+
+		if ({{ login }} === 1) {
+			preventSubmitDefault();
+			document.querySelector("#alert-msg-2").classList.remove("hide");
+			setTimeout(function () {
+				document.querySelector("#alert-msg-2").classList.add("hide");
+				document.location.reload(true);
+				return false;
+			}, 2000)
 		}
 
-		if({{cadastro}}===1 || {{cadastro}}===2){
-			alert('Username ou email já estão cadastrados. Por favor, digite outros dados');	
-		} else if({{cadastro}}===3){
-			alert('Usuário cadastrado com sucesso');
+
+
+
+
+		//if ({{ cadastro }}=== 1 || {{ cadastro }}=== 2) {
+		//	alert('Username ou email já estão cadastrados. Por favor, digite outros dados');
+		//} else if ({{ cadastro }}=== 3) {
+		//	alert('Usuário cadastrado com sucesso');
+		//}
+
+		function preventSubmitDefault() {
+			var form = document.getElementById("myForm");
+			function handleForm(event) { event.preventDefault(); }
+			form.addEventListener('submit', handleForm);
 		}
 
 	</script>
 
 </body>
+
 </html>
