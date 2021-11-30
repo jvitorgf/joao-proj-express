@@ -21,11 +21,8 @@
 		<div id="div-spin" class="hide"><i class="fas fa-circle-notch fa-spin spinner-div"></i></div>
 		<div id="alert-msg-1" class="new-alert hide">Por favor, preencha os dois campos</div>
 		<div id="alert-msg-2" class="new-alert hide">Usuário e/ou senha incorretos</div>
+		<div id="alert-msg-8" class="new-alert hide">Usuário cadastrado com sucesso</div>
 		<button id="botao-login" class="button-resize btn-login botao-busca" type="submit">Entrar</button>
-		{{!-- <div id="alert-msg-3" class="new-alert hide">Username ou email já estão cadastrados. Por favor, digite
-			outros
-			dados</div>
-		<div id="alert-msg-4" class="new-alert hide">Usuário cadastrado com sucesso</div> --}}
 	</form>
 
 	<a href="/cadastro" class="link-cadastro"><button href="/cadastro" class="button-resize-cadastro botao-cadastro "
@@ -66,15 +63,15 @@
 			}, 2000)
 		}
 
-
-
-
-
-		//if ({{ cadastro }}=== 1 || {{ cadastro }}=== 2) {
-		//	alert('Username ou email já estão cadastrados. Por favor, digite outros dados');
-		//} else if ({{ cadastro }}=== 3) {
-		//	alert('Usuário cadastrado com sucesso');
-		//}
+		if ({{ cadastro }}=== 0) {
+			preventSubmitDefault();
+			document.querySelector("#alert-msg-8").classList.remove("hide");
+			setTimeout(function () {
+				document.querySelector("#alert-msg-2").classList.add("hide");
+				document.location.reload(true);
+				return false;
+			}, 2000)
+		}
 
 		function preventSubmitDefault() {
 			var form = document.getElementById("myForm");

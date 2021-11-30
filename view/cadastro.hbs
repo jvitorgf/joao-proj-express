@@ -1,37 +1,79 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Cadastro</title>
 	<link rel="stylesheet" type="text/css" href="estilos.css">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 </head>
+
 <body>
 	<i class="fas fa-user-plus fa-8x icon-cadastro"></i>
 	<h1 class="title">Cadastro</h1>
-	<form method="post">
-		<input placeholder="E-mail"  id="email" class="input-resize-login " type="email" size="30" name="email">
+	<form id="form-cadastro" method="post">
+		<input placeholder="E-mail" id="email" class="input-resize-login " type="email" size="30" name="email">
 		<input placeholder="Username" id="uname" class="input-resize-login " type="text" size="30" name="username">
-		<input  placeholder="Senha" id="pass" class="input-resize-login "  type="password" size="30" name="password">
-		<button id="btn-cadastrar"  class="button-resize btn-login " type="submit">Cadastrar</button>
+		<input placeholder="Senha" id="pass" class="input-resize-login " type="password" size="30" name="password">
+		<div id="div-spin-cad" class="hide"><i class="fas fa-circle-notch fa-spin spinner-div"></i></div>
+		<div id="alert-msg-10" class="new-alert hide">Por favor, preencha todos os campos</div>
+		<div id="alert-msg-11" class="new-alert hide">Username ou email já estão cadastrados. Por favor, digite
+			outros
+			dados</div>
+		<button id="btn-cadastrar" class="button-resize btn-login " type="submit">Cadastrar</button>
 	</form>
 
 	<script type="text/javascript">
-		document.querySelector("#btn-cadastrar").addEventListener("click",validarCadastro);
-		
-		
-		function validarCadastro(){
-			let email =  document.querySelector("#email").value
-			let username =  document.querySelector("#uname").value
-			let password = document.querySelector("#pass").value
+		document.querySelector("#btn-cadastrar").addEventListener("click", validarCadastro);
 
-			if (username == "" || password == ""|| email == ""){
-				alert('Por favor, preencha todos os campos');
-				return false;
+
+		function validarCadastro() {
+
+			let email = document.querySelector("#email").value
+			let username = document.querySelector("#uname").value
+			let password = document.querySelector("#pass").valuea
+
+			if (username == "" || password == "" || email == "") {
+				preventSubmitDefault();
+				document.querySelector("#alert-msg-10").classList.remove("hide");
+				setTimeout(function () {
+					document.querySelector("#alert-msg-10").classList.add("hide");
+					document.location.reload(true);
+					return false;
+				}, 2000)
+			} else if(validateEmail(email)) {
+				document.querySelector("#div-spin-cad").classList.remove("hide");
 			}
 		}
 
+		if ({{ cadastro }} === 1 || {{ cadastro }} === 2) {
+			preventSubmitDefault();
+			document.querySelector("#alert-msg-11").classList.remove("hide");
+			setTimeout(function () {
+				document.querySelector("#alert-msg-11").classList.add("hide");
+				document.location.reload(true);
+				return false;
+			}, 2000)
+		}
+
+		function preventSubmitDefault() {
+			var form = document.getElementById("form-cadastro");
+			function handleForm(event) { event.preventDefault(); }
+			form.addEventListener('submit', handleForm);
+		}
+
+		const validateEmail = (email) => {
+			return String(email)
+				.toLowerCase()
+				.match(
+					/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+				);
+		};
+
+
 	</script>
 </body>
+
 </html>
