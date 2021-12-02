@@ -17,6 +17,7 @@ login = 0;
 cadastro = 5;
 getAdmin = 0;
 item = 0;
+buscaItem = 1;
 
 
 cache = cache({
@@ -70,9 +71,13 @@ app.get('/busca', async (req, res) => {
 		if (req.query.busca !== "" && req.query.busca !== null) {
 			const busca = req.query.busca;
 			alimentos = await Alimentos.buscar(busca);
-
+			if(alimentos == ""){
+				buscaItem = 0;
+			}else{
+				buscaItem = 1;
+			}
 		}
-		res.render('busca', { username: req.session.login, alimentos: alimentos });
+		res.render('busca', { username: req.session.login, alimentos: alimentos,buscaItem:buscaItem });
 	} else {
 		res.redirect('/');
 	}

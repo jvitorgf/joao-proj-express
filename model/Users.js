@@ -18,7 +18,6 @@ module.exports = class Users{
 		let usernameArray =  await db.collection('users').find({username:username}).toArray();
 		let emailArray =  await db.collection('users').find({email:email}).toArray();
 		let result = usernameArray.length + emailArray.length
-		console.log(result)
 		if (usernameArray.length===0&&emailArray.length===0&&email!==""&&username!==""&&password!==""){
 			db.collection('users').insertOne({email: email,username:username,password:password,admin:0});
 		}

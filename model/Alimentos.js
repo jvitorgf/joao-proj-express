@@ -50,7 +50,6 @@ module.exports = class Alimentos{
 			result =  await db.collection('alimentos').find({ nome: new RegExp('^' + busca)} ).toArray();
 		}
 
-
 		conn.close();
 		return result
 	}

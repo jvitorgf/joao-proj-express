@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Buscador de alimentos</title>
 	<link rel="stylesheet" type="text/css" href="estilos.css">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 </head>
+
 <body>
 	<h3>Bem vindo, {{username}}</h3>
 	<form method="post">
 		<button class="btn-logout" type="submit">LOGOUT</button>
-	</form >
-	<img class="img-resize" src="home-food.png">	
-	<h1 class="title">Procure por algum alimento industrializado</h1>
-	<form method="get">
-		<input id="input-busca"  class="input-resize" type="text" size="30" name="busca">
-		<button id="botao-busca" class="button-resize" type="submit" >Buscar</button>
 	</form>
-	
+	<img class="img-resize" src="home-food.png">
+	<h1 class="title">Procure por algum alimento industrializado</h1>
+	<form id="form-busca" method="get">
+		<input id="input-busca" class="input-resize" type="text" size="30" name="busca">
+		<button id="botao-busca" class="button-resize" type="submit">Buscar</button>
+	</form>
+
 	<h2 id="vazio" class="title hide"><i class="fas fa-times"></i> Erro: o campo não pode ser vazio.</h2>
-	<h2 id="qtdMin" class="title hide"><i class="fas fa-times"></i> Erro: o campo deve possuir pelo menos 3 caracteres.</h2>
+	<h2 id="qtdMin" class="title hide"><i class="fas fa-times"></i> Erro: o campo deve possuir pelo menos 3 caracteres.
+	</h2>
 	<h2 id="loading" class="title hide"><i class="fas fa-circle-notch fa-spin"></i> Realizando uma busca ...</h2>
 	<h2 id="nores" class="title hide"><i class="fas fa-exclamation"></i> A busca realizada não retornou resultados.</h2>
-	<h2 id="axioserro" class="title hide"><i class="fas fa-times"></i>  A busca realizada falhou. Por favor, tente novamente.</h2>
+	<h2 id="axioserro" class="title hide"><i class="fas fa-times"></i> A busca realizada falhou. Por favor, tente
+		novamente.</h2>
 	{{#alimentos}}
 	<div class="card ">
 		<img class="img-card-resize" id="img-card" src="data:image/png;base64, {{imagem}}">
 
-		<div class=card-nome>		
+		<div class=card-nome>
 			<strong class="nome-quantidade">{{nome}}- {{qtdGramas}} g</strong>
 
 		</div>
@@ -43,20 +48,24 @@
 			Nutri-Score: <strong id="nutriscore" class="score">{{nutriscore}}</strong>
 			<br>
 			<br>
-			
+
 			<span id="score-text" class="text-nutri">
-				{{qualidadeinfo}}		
+				{{qualidadeinfo}}
 			</span>
+
 
 		</div>
 
 		<div class="info-nutri">
 
-			Em uma porção de 100g existem:	
+			Em uma porção de 100g existem:
 			<br>
 			<br>
 			<span class="serving-nutri-facts">
-				<strong id="gordura">{{qtdGordura}}</strong> <span> g de gordura - </span> <strong id="gordura-sat">{{qtdSaturada}}</strong> <span>g de gordura saturada - </span><strong id="carbo">{{qtdAcucar}}</strong><span> g de açúcares - </span><strong id="sodio">{{qtdSal}}</strong><span> g de sal</span>
+				<strong id="gordura">{{qtdGordura}}</strong> <span> g de gordura - </span> <strong
+					id="gordura-sat">{{qtdSaturada}}</strong> <span>g de gordura saturada - </span><strong
+					id="carbo">{{qtdAcucar}}</strong><span> g de açúcares - </span><strong
+					id="sodio">{{qtdSal}}</strong><span> g de sal</span>
 			</span>
 		</div>
 		{{/alimentos}}
@@ -65,31 +74,59 @@
 	</div>
 
 	<div id="container">
-		
+
 	</div>
-	
+
 
 	<script type="text/javascript">
+		var hostBuscar = "https://joao-proj-express.herokuapp.com/busca";
 		var container = document.querySelector("#container");
-		document.querySelector("#botao-busca").addEventListener("click",buscar);
-		
-		function buscar(){
+		document.querySelector("#botao-busca").addEventListener("click", buscar);
+
+		function buscar() {
 			var flag = 0;
+			var input = document.querySelector("#input-busca").value;
+			limpar();
+
+			if (input == "") {
+				preventSubmitDefault();
+				document.querySelector("#vazio").classList.remove("hide");
+				window.location.replace(hostBuscar);
+			} else if (input.length < 3) {
+				preventSubmitDefault();
+				document.querySelector("#qtdMin").classList.remove("hide");
+				window.location.replace(hostBuscar);
+			} else {
+				document.querySelector("#loading").classList.remove("hide");
+			}
+
+
+
+		}
+
+		if ({{ buscaItem }} === 0) {
+			preventSubmitDefault();
+			document.querySelector("#nores").classList.remove("hide");
+			window.location.replace(hostBuscar);
+		}
+
+
+		function preventSubmitDefault() {
+			var form = document.getElementById("form-busca");
+			function handleForm(event) { event.preventDefault(); }
+			form.addEventListener('submit', handleForm);
+		}
+
+		function limpar() {
 			container.innerHTML = "";
 			document.querySelector("#nores").classList.add("hide");
 			document.querySelector("#loading").classList.add("hide");
 			document.querySelector("#vazio").classList.add("hide");
 			document.querySelector("#qtdMin").classList.add("hide");
 			document.querySelector("#axioserro").classList.add("hide");
-			var input = document.querySelector("#input-busca").value;
-
-			if (input == ""){
-				document.querySelector("#vazio").classList.remove("hide");
-				return false;
-			}
-			
 		}
 
 	</script>
 </body>
+
 </html>
