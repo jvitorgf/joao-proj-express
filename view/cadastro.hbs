@@ -33,9 +33,9 @@
 
 			let email = document.querySelector("#email").value
 			let username = document.querySelector("#uname").value
-			let password = document.querySelector("#pass").valuea
+			let password = document.querySelector("#pass").value
 
-			if (username == "" || password == "" || email == "") {
+			if (username === "" || password === "" || email === "") {
 				preventSubmitDefault();
 				document.querySelector("#alert-msg-10").classList.remove("hide");
 				setTimeout(function () {

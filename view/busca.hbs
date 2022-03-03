@@ -79,7 +79,7 @@
 
 
 	<script type="text/javascript">
-		var hostBuscar = "https://joao-proj-express.herokuapp.com/busca";
+
 		var container = document.querySelector("#container");
 		document.querySelector("#botao-busca").addEventListener("click", buscar);
 
@@ -91,11 +91,11 @@
 			if (input == "") {
 				preventSubmitDefault();
 				document.querySelector("#vazio").classList.remove("hide");
-				window.location.replace(hostBuscar);
+				window.location.reload();
 			} else if (input.length < 3) {
 				preventSubmitDefault();
 				document.querySelector("#qtdMin").classList.remove("hide");
-				window.location.replace(hostBuscar);
+				window.location.reload();
 			} else {
 				document.querySelector("#loading").classList.remove("hide");
 			}
@@ -107,7 +107,8 @@
 		if ({{ buscaItem }} === 0) {
 			preventSubmitDefault();
 			document.querySelector("#nores").classList.remove("hide");
-			window.location.replace(hostBuscar);
+			window.history.pushState({}, document.title, "/" + "busca");
+			window.location.reload();
 		}
 
 

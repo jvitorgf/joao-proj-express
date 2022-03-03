@@ -22,8 +22,8 @@ buscaItem = 1;
 
 cache = cache({
 	prefix: 'redis-cache',
-	host: 'redis-19249.c267.us-east-1-4.ec2.cloud.redislabs.com',
-	port: 19249,
+	host: 'redis-15794.c74.us-east-1-4.ec2.cloud.redislabs.com',
+	port: 15794,
 	auth_pass: process.env.REDISKEY
 });
 
@@ -121,7 +121,7 @@ app.post('/', async (req, res) => {
 		if (result > 0) {
 			res.cookie('login', username);
 			req.session.login = username;
-			if (admin === 1) {
+			if (getAdmin === 1) {
 				res.redirect('/alimento');
 			} else {
 

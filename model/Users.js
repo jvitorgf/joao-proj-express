@@ -29,7 +29,7 @@ module.exports = class Users{
 		const conn = await MongoClient.connect(mongoURL);
 		const db = conn.db();
 
-		let result =  await db.collection('users').find({username:username,password:password,admin:1}).toArray();
+		let result =  await db.collection('users').find({username:username,password:password,admin:process.env.ADMIN}).toArray();
 		
 		conn.close();
 		return result.length
